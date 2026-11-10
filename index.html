@@ -135,25 +135,32 @@ footer{padding:25px 0;color:#777;font-size:10px}
 </style>
 
 
-<style id="mobile-background-gradient-fix">
-@media (max-width:760px) {
-  .welcome-hero:before {
-    width:150vw !important;
-    max-width:none !important;
-    height:820px !important;
-    top:48% !important;
-    left:50% !important;
-    transform:translate(-50%,-50%) !important;
-    background:radial-gradient(
-      ellipse at center,
-      rgba(57,119,132,.27) 0%,
-      rgba(43,91,108,.21) 42%,
-      rgba(35,67,82,.13) 68%,
-      rgba(24,39,48,.055) 84%,
-      transparent 100%
-    ) !important;
-    filter:blur(34px) !important;
-  }
+<style id="portfolio-motion-only">
+/* Motion only: all original colors, gradients, spacing, and layout remain untouched. */
+@media (prefers-reduced-motion: no-preference) {
+  .motion-reveal { opacity: 0; transform: translate3d(0, 22px, 0); transition: opacity .75s ease, transform .75s cubic-bezier(.2,.7,.2,1); }
+  .motion-reveal.is-visible { opacity: 1; transform: translate3d(0, 0, 0); }
+  .motion-reveal[data-motion="left"] { transform: translate3d(-22px, 0, 0); }
+  .motion-reveal[data-motion="left"].is-visible { transform: translate3d(0, 0, 0); }
+  .motion-reveal[data-motion="right"] { transform: translate3d(22px, 0, 0); }
+  .motion-reveal[data-motion="right"].is-visible { transform: translate3d(0, 0, 0); }
+  .welcome-pill, .welcome-copy h1, .welcome-copy p, .welcome-role, .welcome-actions, .welcome-card { animation: portfolio-enter .8s both; }
+  .welcome-copy h1 { animation-delay: .10s; }
+  .welcome-copy p { animation-delay: .20s; }
+  .welcome-role { animation-delay: .30s; }
+  .welcome-actions { animation-delay: .40s; }
+  .welcome-card { animation-delay: .22s; }
+  @keyframes portfolio-enter { from { opacity: 0; transform: translate3d(0, 18px, 0); } to { opacity: 1; } }
+  .card, .contact-card { transition: transform .28s ease, border-color .28s ease, background-color .28s ease; }
+  .card:hover, .contact-card:hover { transform: translateY(-5px); }
+  .skills span { transition: transform .22s ease, border-color .22s ease; }
+  .skills span:hover { transform: translateY(-3px); }
+  .hire, .welcome-actions a, .contact-cta { transition: transform .22s ease, opacity .22s ease; }
+  .hire:hover, .welcome-actions a:hover, .contact-cta:hover { transform: translateY(-2px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .motion-reveal { opacity: 1 !important; transform: none !important; }
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
 </style>
 
@@ -300,5 +307,42 @@ footer{padding:25px 0;color:#777;font-size:10px}
     <div class="footer-right"><span>Yogyakarta · Indonesia</span><a href="#home">Back to top&nbsp; ↑</a></div>
   </div>
 </footer>
+
+<script id="portfolio-motion-script">
+(() => {
+  const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduceMotion) return;
+  const groups = [
+    ['.section-head', 'up'],
+    ['.profile-layout', 'left'],
+    ['.current-item', 'up'],
+    ['.card', 'up'],
+    ['#skills .skills span', 'up'],
+    ['.entry', 'up'],
+    ['.award', 'up'],
+    ['.contact-hero', 'up'],
+    ['.contact-card', 'up'],
+    ['.contact-cta', 'up'],
+    ['.site-footer', 'up']
+  ];
+  groups.forEach(([selector, direction]) => {
+    document.querySelectorAll(selector).forEach((el, index) => {
+      el.classList.add('motion-reveal');
+      if (direction !== 'up') el.dataset.motion = direction;
+      el.style.transitionDelay = `${Math.min(index % 4, 3) * 85}ms`;
+    });
+  });
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -35px 0px' });
+  document.querySelectorAll('.motion-reveal').forEach(el => observer.observe(el));
+})();
+</script>
+
 </body>
 </html>

@@ -303,6 +303,79 @@ body{background:#fff;color:#244F78}
 [dir="rtl"] .demo-label{margin-left:0;margin-right:-12px}
 @media(max-width:760px){.demo-label{margin-left:-22px;padding:4px 7px;font-size:9px}.language-select{max-width:115px}[dir="rtl"] .demo-label{margin-right:-22px}}
 </style>
+
+<style id="mobile-header-controls-fix">
+@media (max-width: 760px) {
+  .navin {
+    display: grid !important;
+    grid-template-columns: minmax(0, auto) minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    align-items: center;
+    column-gap: 8px;
+    row-gap: 9px;
+    min-height: 0 !important;
+    height: auto !important;
+    padding-top: 12px !important;
+    padding-bottom: 12px !important;
+  }
+  .brand {
+    grid-column: 1;
+    grid-row: 1;
+    width: min(190px, 58vw) !important;
+    height: 43px !important;
+    min-width: 0;
+  }
+  .demo-label {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+    margin: 0 !important;
+    padding: 5px 9px !important;
+    font-size: 10px !important;
+  }
+  .navlinks { display: none !important; }
+  .navright {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 10px !important;
+    width: 100%;
+    margin: 0 !important;
+    min-width: 0;
+  }
+  .navright select,
+  .navright .role,
+  .navright .language-select {
+    display: block;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: 42px;
+    padding: 8px 30px 8px 11px !important;
+    border-radius: 10px;
+    font-size: 14px !important;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-appearance: menulist;
+    appearance: auto;
+  }
+}
+@media (max-width: 360px) {
+  .brand { width: min(165px, 55vw) !important; }
+  .navright { gap: 7px !important; }
+  .navright select,
+  .navright .role,
+  .navright .language-select {
+    font-size: 12px !important;
+    padding-left: 8px !important;
+    padding-right: 23px !important;
+  }
+}
+</style>
+
 </head>
 <body>
 <header class="nav"><div class="shell navin">
